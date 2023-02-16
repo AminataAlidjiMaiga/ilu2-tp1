@@ -2,6 +2,10 @@ package villagegaulois;
 
 import personnages.Chef;
 import personnages.Gaulois;
+import villagegaulois.Etal;
+import java.util.List;
+
+import Gestion.Chambre;
 
 public class Village {
 	private String nom;
@@ -56,4 +60,99 @@ public class Village {
 		}
 		return chaine.toString();
 	}
-}
+	
+	public class Marche {
+		private Etal [] etals;
+		
+	public Marche(int nbEtals) {
+		this.etals = new Etal[nbEtals];
+	}
+	private void utiliserEtal(int indiceEtal, Gaulois vendeur,String produit, int nbProduit) {
+		this.etals[indiceEtal].occuperEtal(vendeur, produit, nbProduit);
+		}
+	
+	
+	private int trouverEtalLibre() {
+		int indiceLibre=-1;
+		for (int i=0; i<etals.length;i++) {
+			if(!etals[i].isEtalOccupe()) {
+				indiceLibre=i;
+			}
+		}
+		return indiceLibre;
+	
+	}
+	
+	private Etal[] trouverEtals(String produit) {
+		 Etal[] correspondances =new Etal[etals.length];
+		 int pos=0;
+		 for(int i=0; i<etals.length;i++) {
+			 if (etals[i].contientProduit(produit)){
+				 correspondances[pos]=etals[i];
+				 pos++;
+			 }
+		 }
+		 return correspondances;
+	}
+	
+	private Etal trouverVendeur(Gaulois gaulois) {
+		for (int i=0; i<etals.length;i++) {
+			if(etals[i].getVendeur()==gaulois) {
+				return etals[i];
+			}
+		}
+		return null;
+		
+	}
+	
+	private void afficherMarche() {
+		int nbEtalVide = 0;
+		for (int i = 0 ; i < etals.length ; i++) {
+			if (etals[i].isEtalOccupe()) {
+				System.out.println(etals[i].afficherEtal() + "\n");
+			}
+			nbEtalVide++;
+		}
+		if (nbEtalVide != 0) {
+			System.out.println("Il reste " + nbEtalVide + " étals non utilisés dans le marché.\n");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	private Etal[] trouverEtals(String produit) {
+//		int nbEtalsLibres = 0;
+//		for (int i = 0 ; i < etals.length ; i++) {
+//			if (etals[i] != null && etals[i].isEtalOccupe() && etals[i].contientProduit(produit)) {
+//				nbEtalsLibres++;
+//			}
+//		}
+//		Etal[] etalsLibres = new Etal[nbEtalsLibres];
+//		int j = 0;
+//		for (int i = 0 ; i < etals.length ; i++) {
+//			if (etals[i] != null && etals[i].isEtalOccupe() && etals[i].contientProduit(produit)) {
+//				etalsLibres[j++] = etals[i];
+//			}
+//		}
+//		return etalsLibres;
+//	}}
+
+}}	
