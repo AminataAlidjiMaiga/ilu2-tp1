@@ -25,16 +25,21 @@ public class Etal {
 		etalOccupe = true;
 	}
 
-	public String libererEtal() {
-		etalOccupe = false;
-		StringBuilder chaine = new StringBuilder(
-				"Le vendeur " + vendeur.getNom() + " quitte son étal, ");
-		int produitVendu = quantiteDebutMarche - quantite;
-		if (produitVendu > 0) {
-			chaine.append(
-					"il a vendu " + produitVendu + " parmi " + produit + ".\n");
-		} else {
-			chaine.append("il n'a malheureusement rien vendu.\n");
+	public String libererEtal() throws NullPointerException {
+		StringBuilder chaine = new StringBuilder();
+		try {
+			
+			etalOccupe = false;
+			int produitVendu = quantiteDebutMarche - quantite;
+			chaine.append("Le vendeur " + vendeur.getNom() + " quitte son étal, ");
+			if (produitVendu > 0) {
+				chaine.append(
+						"il a vendu " + produitVendu + " parmi " + produit + ".\n");} 
+			else {
+				chaine.append("il n'a malheureusement rien vendu.\n");}
+			
+			} catch(NullPointerException e) {
+				System.out.println("Cet étal n'est pas occupé !");
 		}
 		return chaine.toString();
 	}
@@ -47,15 +52,25 @@ public class Etal {
 		return "L'étal est libre";
 	}
 
-	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
-		if (etalOccupe) {
-			StringBuilder chaine = new StringBuilder();
+	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) throws IllegalArgumentException,IllegalStateException {
+		StringBuilder chaine = new StringBuilder();
+		try {
+			
 			chaine.append(acheteur.getNom() + " veut acheter " + quantiteAcheter
 					+ " " + produit + " à " + vendeur.getNom());
 			if (quantite == 0) {
 				chaine.append(", malheureusement il n'y en a plus !");
 				quantiteAcheter = 0;
 			}
+			
+			if (quantiteAcheter<1) {
+				throw new IllegalArgumentException();
+			}
+			if(!etalOccupe) {
+				throw new IllegalStateException();
+			}
+			
+			
 			if (quantiteAcheter > quantite) {
 				chaine.append(", comme il n'y en a plus que " + quantite + ", "
 						+ acheteur.getNom() + " vide l'étal de "
@@ -70,7 +85,15 @@ public class Etal {
 						+ vendeur.getNom() + "\n");
 			}
 			return chaine.toString();
+		}catch( NullPointerException e) {
+			System.out.println("Cet acheteur est null !");}
+		catch(IllegalArgumentException e1) {
+			System.out.println("la quantité ne doit pas etre inférieur à 1 !");
+		}catch(IllegalStateException e2) {
+			System.out.println("L'étal n'est pas occupé");
 		}
+			
+			
 		return null;
 	}
 
